@@ -1,6 +1,19 @@
 <?php 
+  session_start();
+
+  if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+  }
+  
+  if ($_SESSION['user']['role'] !== 'admin') {
+    http_response_code(403);
+    echo "Acesso negado.";
+    exit;
+  }
   include 'partials/header.php'; 
   require_once 'db.php';
+
 ?>
 
 <form method="POST" class="row g-3">
@@ -25,12 +38,11 @@
     <input type="date" name="eventDate" class="form-control">
   </div>
   <div class="col-2 align-self-end">
-    <button type="submit" class="btn px-4 py-2" style="background-color: #974315; color: white; border-radius: 20px;">Cadastrar</button>
+    <button type="submit" class="btn px-4 py-2" style="background-color: #974315; color: white; border-radius: 20px;">Salvar</button>
   </div>
 </form>
 
 <?php
-// EXCLUSÃO COM REDIRECIONAMENTO
 if (isset($_GET['excluir']) && is_numeric($_GET['excluir'])) {
     $id = $_GET['excluir'];
     $pdo->prepare("UPDATE event SET dateDeleted = NOW() WHERE id = ?")->execute([$id]);
@@ -38,7 +50,6 @@ if (isset($_GET['excluir']) && is_numeric($_GET['excluir'])) {
     exit;
 }
 
-// CADASTRO COM REDIRECIONAMENTO
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userId = $_POST['userId'] ?? null;
     $eventName = $_POST['eventName'] ?? null;
@@ -55,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// EXIBIR MENSAGEM
 if (isset($_GET['msg'])) {
     $mensagens = [
         'cadastrado' => ['tipo' => 'success', 'texto' => 'Evento cadastrado com sucesso!'],
@@ -68,7 +78,6 @@ if (isset($_GET['msg'])) {
     }
 }
 
-// LISTAGEM DOS EVENTOS
 $eventos = $pdo->query("
     SELECT e.*, u.name AS user 
     FROM event e 
@@ -100,7 +109,12 @@ if ($eventos):
       <td><?= htmlspecialchars($e['user']) ?></td>
       <td><?= $e['eventDate'] ?></td>
       <td>
-        <a href="<?= $_SERVER['PHP_SELF'] ?>?excluir=<?= $e['id'] ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza que deseja excluir este evento?')">Excluir</a>
+        <a href="<?= $_SERVER['PHP_SELF'] ?>?excluir=<?= $e['id'] ?>" 
+            class="btn btn-sm btn-outline-danger" 
+            title="Excluir"
+            onclick="return confirm('Tem certeza que deseja excluir este cliente?')">
+            <i class="bi bi-trash"></i>
+          </a>
       </td>
     </tr>
     <?php endforeach; ?>

@@ -1,9 +1,21 @@
 <?php 
+  session_start();
+
+  if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+  }
+  
+  if ($_SESSION['user']['role'] !== 'admin') {
+    http_response_code(403);
+    echo "Acesso negado.";
+    exit;
+  }
+  
   include 'partials/header.php'; 
 ?>
-<h2>Upload de Fotografias</h2>
-<form method="POST" enctype="multipart/form-data" class="mt-3">
-  <div class="mb-3">
+<form method="POST" enctype="multipart/form-data" class="row g-3">
+  <div class="col-md-3">
     <label class="form-label">Cliente</label>
     <select id="cliente" name="cliente_id" class="form-select" required>
       <option value="">Selecione</option>
@@ -16,17 +28,17 @@
       ?>
     </select>
   </div>
-  <div class="mb-3">
+  <div class="col-md-3">
     <label class="form-label">Evento</label>
     <select id="evento" name="evento_id" class="form-select" required>
       <option value="">Selecione o cliente primeiro</option>
     </select>
   </div>
-  <div class="mb-3">
+  <div class="col-md-6">
     <label class="form-label">Fotografias</label>
     <input type="file" name="fotos[]" class="form-control" multiple required accept="image/*">
   </div>
-  <button type="submit" class="btn" style="background-color: #974315; color: white;">Enviar</button>
+  <button type="submit" class="btn" style="background-color: #974315; color: white;border-radius: 20px;">Salvar</button>
 </form>
 
 <script>

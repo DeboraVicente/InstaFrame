@@ -2,7 +2,10 @@
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    email VARCHAR(150)
+    email VARCHAR(150),
+    role ENUM('admin', 'cliente') NOT NULL DEFAULT 'cliente',
+    password_hash VARCHAR(255) NOT NULL, 
+    dateDeleted DATETIME DEFAULT NULL
 );
 
 -- Tabela de eventos vinculada ao cliente
@@ -11,6 +14,7 @@ CREATE TABLE event (
     userId INT NOT NULL,
     eventName VARCHAR(100) NOT NULL,
     eventDate DATE,
+    dateDeleted DATETIME DEFAULT NULL,
     FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
 );
 
