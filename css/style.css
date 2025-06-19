@@ -1,0 +1,8 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+}
+
+a.nav-link:hover {
+  text-decoration: underline;
+  color: #e3d6c5 !important;
+}
