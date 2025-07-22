@@ -23,9 +23,9 @@
       <?php foreach ($fotos as $foto): ?>
         <div class="col">
           <div class="card shadow-sm">
-            <img src="<?= htmlspecialchars($foto['file_path']) ?>" class="card-img-top" alt="Foto">
+            <img src="<?= htmlspecialchars($foto['path']) ?>" class="card-img-top" alt="Foto">
             <div class="card-body">
-              <a href="<?= htmlspecialchars($foto['file_path']) ?>" download class="btn btn-outline-primary w-100">Baixar</a>
+              <a href="<?= htmlspecialchars($foto['path']) ?>" download class="btn btn-outline-primary w-100">Baixar</a>
             </div>
           </div>
         </div>

@@ -13,7 +13,7 @@
 
   <header class="navbar navbar-expand-lg fixed-top" style="background-color: #788990;">
     <div class="container-fluid">
-      <a class="navbar-brand text-white" href="index.php" style="display: flex; align-items: center;">
+      <a class="navbar-brand text-white" href="<?= ($_SESSION['user']['role'] ?? '') === 'admin' ? 'index.php' : 'gallery.php' ?>"  style="display: flex; align-items: center;">
       <i class="bi bi-camera"></i>
       <span class="ms-2">InstaFrame</span>
       </a>
